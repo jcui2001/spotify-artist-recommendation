@@ -1,10 +1,7 @@
 # Alternating Least Squares Recommendation Engine
 
-### Types of Recommendation engines
-1. Popularity of the songs
-2. Content-based filtering
-    - Get all the information about a song i.e. mood tags and genre tags, and match the taste based on the user's tastes
-3. Collaborative-based filtering
+### Collaborative Filtering
+Collaborative-based filtering
     - Looks at tastes filtering
     - Disregards music tags and only looks at user's preferences
     - I.e. if two listener's are similar in their preference profile, they will also get recommended songs that one person liked
@@ -45,12 +42,43 @@ How many times did they view or purchase something?
 
 We don’t have "negative feedback" — only positive signals and their strengths. The implicit library is designed for exactly this scenario.
 
+To train an implicit model, you have to create a sparse encoding of the COO matrix that contains a column representing the subject, one column representing the target, and one column representing the weight of each subject-target relationship.
+
+In the case of a Spotify artists recommendation algorithm, the COO matrix would have columns representing number of plays, the user, and the artist. 
+
+A latent factor is a hidden dimension the model learns to explain user-artist interactions.
+
+Each artist is represented as a vector of numbers (its artist_factors).
+
+Each user is represented as a vector of numbers (its user_factors).
+
+These numbers are not explicitly given in the data — they’re learned by the ALS optimization process. The number of factors is given to the initialization of the `AlternatingLeastSquares` model.
+    - I.e. if you initialize with ```implict_model = implicit.als.AlternatingLeastSquares(factors=50, iterations=10, regularization=0.01)``` the artist_factors will have size `50`.
 
 ### How do you find the value of a missing cell?
 
 ![image.png](attachment:9d1082f2-559c-4f43-8631-642f37d0f6fc.png)
 
 Do the dot product of a particular row (1 user) in the user matrix by a particular column (1 artist) in the artist matrix.
+
+The dot product between a user vector and an artist vector estimates how much that user will like that artist.
+
+![alt text](image.png)
+
+where:
+
+𝑝
+𝑢
+p
+u
+ = user’s latent vector
+
+𝑞
+𝑖
+q
+i
+ = item’s latent vector
+
 
 ## Recommendation Algorithm
 1. Multiply a user vector with all artist vectors

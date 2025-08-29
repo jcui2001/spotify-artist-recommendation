@@ -3,7 +3,7 @@ import implicit
 import scipy
 from typing import Tuple, List
 from pathlib import Path
-
+import numpy as np
 
 class ImplicitRecommender:
     """The ImplicitRecommender class computes recommendations for a given user
@@ -47,6 +47,23 @@ class ImplicitRecommender:
             for artist_id in artist_ids
         ]
         return artists, scores
+    
+    def similar_artists(
+        self,
+        artist_id: int,
+        n: int = 10
+    ):
+        # Retrieve artist vector from implicit model
+        artist_vec = self.implicit_model.artist_vectors
+        
+        artist_norms = np.sqrt((artist_vec * artist_vec).sum(axis=1))
+        
+        scores = artist_vec.dot(artist_vec[artist_id]) / artist_norms
+        
+        top_idx = np.argpartition(scores, -n)[-n]
+        similar = sorted(zip(top_idx, scores[top_idx] / artist_norms[artist_id]), key=lambda x: -x[1])
+        
+        return similar
 
 
 if __name__ == "__main__":
