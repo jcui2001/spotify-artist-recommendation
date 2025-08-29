@@ -39,7 +39,7 @@ class UserArtistRetriever:
             )
         )
         
-        # Load sparse ataframe into Compressed Sparse Row Format
+        # Load sparse dataframe into Compressed Sparse Row Format
         self._user_artists_df = coo.tocsr()
         
         return coo.tocsr()
