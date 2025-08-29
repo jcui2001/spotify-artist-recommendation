@@ -53,6 +53,7 @@ Each artist is represented as a vector of numbers (its artist_factors).
 Each user is represented as a vector of numbers (its user_factors).
 
 These numbers are not explicitly given in the data — they’re learned by the ALS optimization process. The number of factors is given to the initialization of the `AlternatingLeastSquares` model.
+    
     - I.e. if you initialize with ```implict_model = implicit.als.AlternatingLeastSquares(factors=50, iterations=10, regularization=0.01)``` the artist_factors will have size `50`.
 
 ### How do you find the value of a missing cell?
